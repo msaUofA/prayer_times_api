@@ -21,8 +21,27 @@ for i, start in enumerate(month_starts):
 
 app = Flask(__name__)
 
+@app.route('/prayer-times', methods=['GET'])
+def get_prayer_times():
+    month_i = request.args.get('month', type=int)
+    day = request.args.get('day', type=int)
+
+    if month_i not in range(1,12+1):
+        return jsonify({'error': 'invalid month'}), 400
+    month = months[month_i]
+
+    month_data = months_data.get(month)
+    prayer_times = month_data[month_data['Date'] == day]
+
+    if prayer_times.empty:
+        return jsonify({'error': 'No data available for the provided day'}), 404
+
+    result = prayer_times[['Day', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']].to_dict(orient='records')[0]
+
+    return jsonify(result)
+
 @app.route('/prayer-times/<int:month>/<int:day>', methods=['GET'])
-def get_prayer_times(month, day):
+def get_prayer_times2(month, day):
     if month not in range(1, 12 + 1):
         return jsonify({'error': 'Invalid month'}), 400
 
@@ -31,7 +50,7 @@ def get_prayer_times(month, day):
 
     # Retrieve the data for the specific month from months_data
     month_data = months_data.get(month_name)
-    
+
     # Filter data for the specific day
     prayer_times = month_data[month_data['Date'] == day]
 
