@@ -40,23 +40,23 @@ def get_prayer_times():
 
     return jsonify(result)
 
-# @app.route('/prayer-times/<int:month>/<int:day>', methods=['GET'])
-# def get_prayer_times2(month, day):
-#     if month not in range(1, 12 + 1):
-#         return jsonify({'error': 'Invalid month'}), 400
+@app.route('/prayer-times/<int:month>/<int:day>', methods=['GET'])
+def get_prayer_times2(month, day):
+    if month not in range(1, 12 + 1):
+        return jsonify({'error': 'Invalid month'}), 400
 
-#     month_name = months[month]
+    month_name = months[month]
 
-#     month_data = months_data.get(month_name)
+    month_data = months_data.get(month_name)
 
-#     prayer_times = month_data[month_data['Date'] == day]
+    prayer_times = month_data[month_data['Date'] == day]
 
-#     if prayer_times.empty:
-#         return jsonify({'error': 'no data'}), 404
+    if prayer_times.empty:
+        return jsonify({'error': 'no data'}), 404
 
-#     result = prayer_times[['Day', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']].to_dict(orient='records')[0]
+    result = prayer_times[['Day', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']].to_dict(orient='records')[0]
 
-#     return jsonify(result)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True)
