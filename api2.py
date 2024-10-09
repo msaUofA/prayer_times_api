@@ -50,7 +50,7 @@ def get_prayer_times2(month, day):
 
     # Retrieve the data for the specific month from months_data
     month_data = months_data.get(month_name)
-    
+
     # Filter data for the specific day
     prayer_times = month_data[month_data['Date'] == day]
 
