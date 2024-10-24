@@ -1,5 +1,6 @@
 import pandas as pd
 from flask import Flask, jsonify, request
+from datetime import datetime
 
 file_path = 'Edmonton Prayer Times - 2024 IMS.csv'
 data = pd.read_csv(file_path)
@@ -26,8 +27,14 @@ def get_prayer_times():
     month_i = request.args.get('month', type=int)
     day = request.args.get('day', type=int)
 
-    if month_i not in range(1,12+1):
+    if not month_i or not day:
+        today = datetime.now()
+        month_i = today.month
+        day = today.day
+
+    if month_i not in range(1, 12 + 1):
         return jsonify({'error': 'invalid month'}), 400
+
     month = months[month_i]
 
     month_data = months_data.get(month)
@@ -60,4 +67,3 @@ def get_prayer_times2(month, day):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
