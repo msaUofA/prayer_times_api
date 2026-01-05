@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request, Response
 from datetime import datetime
 
 file_path = 'Edmonton Prayer Times - 2026 IMS v2.csv'
-data = pd.read_csv(file_path)
+data = pd.read_csv(file_path, header=None)
 
 months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
